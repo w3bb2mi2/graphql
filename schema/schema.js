@@ -42,16 +42,20 @@ const Mutation = new GraphQLObjectType({
   name:"Mutation",
   fields:{
     addDirector:{
-      args:{type: GraphQLInt},
-      age:{type: GraphQLInt}
-    } 
-  },
-  resolve(parent, args){
-    const director = new Directors({
-      name: args.name,
-      age: args.age
-    })
-    director.save();
+      type: DirectorType, 
+      args:{
+        name:{type: GraphQLString},
+        age:{type: GraphQLInt}
+      },
+      resolve(parent, args){
+        const director = new Directors({
+          name: args.name,
+          age: args.age
+        })
+        console.log(args)
+        return director.save();
+      }
+    },  
   }
 })
 
@@ -89,4 +93,5 @@ const Query = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
   query: Query,
+  mutation: Mutation,
 });
